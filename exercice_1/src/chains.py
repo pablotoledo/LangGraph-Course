@@ -1,5 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_openai import ChatOpenAI
+from langchain_openai import AzureChatOpenAI
+import os
 
 reflection_prompt = ChatPromptTemplate.from_messages(
     [
@@ -25,6 +26,10 @@ generation_prompt = ChatPromptTemplate.from_messages(
 )
 
 
-llm = ChatOpenAI()
+llm = AzureChatOpenAI(
+    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+    api_version="2024-10-21"
+)
 generate_chain = generation_prompt | llm
 reflect_chain = reflection_prompt | llm
